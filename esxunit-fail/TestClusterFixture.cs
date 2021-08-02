@@ -10,11 +10,11 @@ using Microsoft.Extensions.Options;
 
 namespace esxunit
 {
-    public class ClusterFixture : IDisposable
+    public class TestClusterFixture : IDisposable
     {
         public TestCluster Cluster { get; private set; }
 
-        public ClusterFixture()
+        public TestClusterFixture()
         {
             this.Cluster = new TestClusterBuilder()
                 .AddSiloBuilderConfigurator<TestSiloConfiguartion>()
@@ -52,8 +52,8 @@ namespace esxunit
         }
     }
 
-    [CollectionDefinition(nameof(ClusterCollection))]
-    public class ClusterCollection : ICollectionFixture<ClusterFixture>
+    [CollectionDefinition(nameof(TestClusterCollection))]
+    public class TestClusterCollection : ICollectionFixture<TestClusterFixture>
     {
     }
 }

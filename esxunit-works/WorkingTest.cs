@@ -1,25 +1,25 @@
 using System.Threading.Tasks;
 using EventStore.Client;
 using Microsoft.Extensions.DependencyInjection;
-using Orleans.TestingHost;
+using Microsoft.Extensions.Hosting;
 using Xunit;
 
 namespace esxunit
 {
-    [Collection(nameof(ClusterCollection))]
-    public class DumbTest
+    [Collection(nameof(RealClusterCollection))]
+    public class WorkingTest
     {
-        private readonly TestCluster _cluster;
+        private readonly IHost _silo;
 
-        public DumbTest(ClusterFixture clusterFixture)
+        public WorkingTest(RealClusterFixture realClusterFixture)
         {
-            this._cluster = clusterFixture.Cluster;
+            this._silo = realClusterFixture.Silo;
         }
 
         [Fact]
         public async Task Test()
         {
-            var es = this._cluster.ServiceProvider.GetRequiredService<EventStoreClient>();
+            var es = this._silo.Services.GetRequiredService<EventStoreClient>();
 
             var result = await es.AppendToStreamAsync("Test12222", StreamRevision.None, new EventData[] { new EventData(Uuid.NewUuid(), "Test", System.ReadOnlyMemory<byte>.Empty) });
 
